@@ -1,0 +1,845 @@
+﻿Build1=Default,b4a.example
+File1=!!! Handwritingg _3.ttf.ttf
+File10=minimalism-simple-gradient-soft-gradient-wallpaper-preview.jpg
+File11=pngwing.com (15).png
+File2=aboutlayout.bal
+File3=developerlayout.bal
+File4=GothamMedium.ttf
+File5=layout1.bal
+File6=loadingscreen.bal
+File7=Logomainmenu.png
+File8=mainpage.bal
+File9=Michroma-Regular.ttf
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=b4xencryption
+Library2=core
+Library3=keyvaluestore2
+Library4=phone
+Library5=randomaccessfile
+Library6=sql
+Library7=xui
+Library8=xui views
+Library9=fontawesome
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.b4x.com/forum/showthread.php?p=78136~\n~AddPermission(android.permission.READ_PHONE_STATE)~\n~AddPermission(android.permission.READ_SMS)~\n~AddPermission(android.permission.READ_PHONE_NUMBERS)~\n~AddPermission(android.permission.READ.EXTERNAL.STORAGE)~\n~AddPermission(android.permission.MANAGE.DOCUMENTS)~\n~AddPermission(android.permission.SEND_SMS)~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="30"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~SetApplicationAttribute(android:theme, "@android:style/Theme.Holo")~\n~~\n~'End of default text.~\n~
+Module1=durationlog
+Module2=modSMS
+Module3=Starter
+Module4=StateManager
+NumberOfFiles=11
+NumberOfLibraries=9
+NumberOfModules=4
+Version=11.5
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Appliance Controller
+	#VersionCode: 5
+	#VersionName: Alpha v1.3
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: Portrait
+	#CanInstallToExternalStorage: False
+	#BridgeLogger: True
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: False
+#End Region
+
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+
+End Sub
+
+Public Sub SetShadow (View As B4XView, Offset As Double, Color As Int)
+    #if B4J
+    Dim DropShadow As JavaObject
+	'You might prefer to ignore panels as the shadow is different.
+	'If View Is Pane Then Return
+    DropShadow.InitializeNewInstance(IIf(View Is Pane, "javafx.scene.effect.InnerShadow", "javafx.scene.effect.DropShadow"), Null)
+     DropShadow.RunMethod("setOffsetX", Array(Offset))
+    DropShadow.RunMethod("setOffsetY", Array(Offset))
+    DropShadow.RunMethod("setRadius", Array(Offset))
+    Dim fx As JFX
+    DropShadow.RunMethod("setColor", Array(fx.Colors.From32Bit(Color)))
+    View.As(JavaObject).RunMethod("setEffect", Array(DropShadow))
+    #Else If B4A
+	Offset = Offset * 5
+	View.As(JavaObject).RunMethod(10, Array(Offset.As(Float)))
+    #Else If B4i
+    View.As(View).SetShadow(Color, Offset, Offset, 0.5, False)
+    #End If
+	SetShadow(Panel1, 200dip, 0xFF000000)
+	SetShadow(Panel4, 200dip, 0xFF000000)
+	SetShadow(Panel2, 200dip, 0xFF000000)
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+    Dim SMS As PhoneSms
+	Dim PE As PhoneEvents
+	Dim PhoneID As PhoneId
+	Dim x,x2,x3,x4,y,y2,y3,y4 As String
+
+	Private Label1 As Label
+	Private EditText1 As EditText
+
+	Private Button2 As Button
+	Private txtNumber As EditText
+	'DateTime.DateFormat = "yyMMddHHmmss"
+	'Private buttons() As Button
+	'buttons = Array As Button (log1off,log1on,log2off,log2on,log3off,log3on,log4off,log4on)
+	Private status1 As Button
+	Private status2 As Button
+	Private status3 As Button
+	Private status4 As Button
+	Private log1off As EditText
+	Private log1on As EditText
+	Private log2on As EditText
+	Private log2off As EditText
+	Private log3on As EditText
+	Private log3off As EditText
+	Private log4on As EditText
+	Private log4off As EditText
+	Private Panel1 As Panel
+	Private EditText2 As EditText
+	Dim cd,cx As ColorDrawable
+	
+	Private device2on As Button
+	Private device2off As Button
+	Private device3on As Button
+	Private device3off As Button
+	Private device4on As Button
+	Private device4off As Button
+	Private device1on As Button
+	Private device1off As Button
+	Private Panel4 As Panel
+	Private Panel2 As Panel
+	Private allon As Button
+	Private allof As Button
+	Private loadingpanel As Panel
+	Private Button1 As Button
+	Private Panel3 As Panel
+	Private Panel11 As Panel
+	Private Panel12 As Panel
+	Private ImageView1 As ImageView
+	Private mainpanel As Panel
+	Public aboutpanel As Panel
+	Private aboutchildpanel As Panel
+	Private developerpanel As Panel
+End Sub
+
+
+Sub Activity_Create(FirstTime As Boolean)
+	'Do not forget to load the layout file created with the visual designer. For example:
+	Activity.LoadLayout("loadingscreen")
+	Sleep(2800)
+	loadingpanel.Visible = False
+	
+	
+	
+	Activity.LoadLayout("layout1")
+	Activity.LoadLayout("mainpage")
+	Panel3.visible = False
+	Panel1.Visible = False
+	Panel2.Visible = False
+	Panel4.Visible = False
+	Panel12.Visible = False
+	Panel11.Visible = False
+
+	
+	
+	
+	cd.Initialize(Colors.Green, 15dip)  'you can also use Initialize2 with more parameters
+	cx.Initialize(Colors.White, 15dip)
+	EditText1.Color=Colors.Transparent
+	EditText2.Color=Colors.Transparent
+	log1on.Color=Colors.Transparent
+	log1off.Color=Colors.Transparent
+	log2on.Color=Colors.Transparent
+	log2off.Color=Colors.Transparent
+	log3on.Color=Colors.Transparent
+	log3off.Color=Colors.Transparent
+	log4on.Color=Colors.Transparent
+	log4off.Color=Colors.Transparent
+	
+	
+	
+	StartService(modSMS)
+	If StateManager.RestoreState(Activity, "Main", 1440) = False Then
+		'set the default values
+		txtNumber.Text = ""
+		EditText1.Text = ""
+		EditText2.Text = ""	
+	End If
+	
+	'Dim digit As String = txtNumber.Text.Length
+	'If txtNumber.Text = 0 Or digit < 10 Then
+		'For i=0 To 2
+		'	buttons(i).Enabled=False
+		'Next
+	'End If
+	
+	x = log1on.Text
+	x2 = log2on.Text
+	x3 = log3on.Text
+	x4 = log4on.Text
+	y = log1off.Text
+	y2 = log2off.Text
+	y3 = log3off.Text
+	y4 = log4off.Text
+	If (x.Length > 1 And y = "") Then
+		status1.Background = cd
+		device1on.visible = False
+		device1off.Visible = True
+	End If
+	If (x2.Length > 1 And y2 = "") Then
+		status2.Background = cd
+		device2on.visible = False
+		device2off.Visible = True
+	End If
+	If (x3.Length > 1 And y3 = "") Then
+		'status3.Color=Colors.Green
+		status3.Background = cd
+		device3on.visible = False
+		device3off.Visible = True
+	End If
+	If (x4.Length > 1 And y4 = "") Then
+		'status4.Color=Colors.Green
+		status4.Background = cd
+		device4on.visible = False
+		device4off.Visible = True
+	End If
+	
+	'assuming that we need to read some global settings we can use:
+	Dim AutoUpdate As Boolean = StateManager.GetSetting2("AutoUpdate", False) 'ignore
+	'Later if the user changes this setting we can call: StateManager.SetSetting("AutoUpdate", ...)
+End Sub
+
+
+
+Sub Activity_Resume
+	
+End Sub
+
+
+Sub Activity_Pause (UserClosed As Boolean)
+	If UserClosed Then
+		StopService(modSMS)
+		StopService(Starter)
+		'StateManager.ResetState("Main")	
+		StateManager.SaveState(Activity, "Main")
+	End If
+	StateManager.SaveSettings
+End Sub
+
+'BUTTON ONLICK ACTIVITY
+Sub device1on_Click
+	device1on.visible = False
+	device1off.Visible = True
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	
+	log1on.Text = ""
+	log1off.Text = ""
+	Slot1
+	'status1.Color = Colors.Green
+	status1.Background = cd
+	'Dim H As String
+	DateTime.TimeFormat = "hh:mm a"
+	'H = DateTime.Time(DateTime.Now)
+	'M = DateTime.GetMinute(DateTime.Now)
+	Sleep(5000)
+	log1on.Text = DateTime.Time(DateTime.Now)
+End Sub
+
+Sub device1off_Click
+	device1on.visible = True
+	device1off.Visible = False
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	
+	status1.Background = cx
+		If log1off.Text.Length = 11 And log1on.Text.Length = 11 Then
+			ToastMessageShow("Already OFF",True)
+		
+		End If
+		
+		If log1on.Text = "" And log1off.Text = "" Then	
+			ToastMessageShow("Already OFF",True)
+		Else
+		Slot1x
+		DateTime.TimeFormat = "hh:mm a"
+		Sleep(5000)
+		log1off.Text = DateTime.Time(DateTime.Now)
+		Log(log1off.Text.Length)
+		End If	
+End Sub
+
+
+Sub device2on_Click
+	device2on.visible = False
+	device2off.Visible = True
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	log2on.Text = ""
+	log2off.Text = ""
+	Slot2
+	status2.Background = cd
+	Sleep(5000)
+	DateTime.TimeFormat = "hh:mm a"
+	log2on.Text = DateTime.Time(DateTime.Now)
+End Sub
+
+Sub device2off_Click
+	device2on.visible = True
+	device2off.Visible = False
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+
+	status2.Background = cx
+	If log2off.Text.Length = 11 And log2on.Text.Length = 11 Then
+		ToastMessageShow("Already OFF",True)
+		
+	End If
+		
+	If log2on.Text = "" And log2off.Text = "" Then
+		ToastMessageShow("Already OFF",True)
+	Else
+		Slot2x
+		Sleep(5000)
+		DateTime.TimeFormat = "hh:mm a"
+		log2off.Text = DateTime.Time(DateTime.Now)
+	End If
+	
+End Sub
+
+Sub device3on_Click
+	device3on.visible = False
+	device3off.Visible = True
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	log3on.Text = ""
+	log3off.Text = ""
+	Slot3
+	status3.Background = cd
+	Sleep(5000)
+	DateTime.TimeFormat = "hh:mm a"
+	log3on.Text = DateTime.Time(DateTime.Now)
+End Sub
+
+Sub device3off_Click
+	device3on.visible = True
+	device3off.Visible = False
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	
+	status3.Background = cx
+	If log3off.Text.Length = 11 And log3on.Text.Length = 11 Then
+		ToastMessageShow("Already OFF",True)
+		
+	End If
+		
+	If log3on.Text = "" And log3off.Text = "" Then
+		ToastMessageShow("Already OFF",True)
+	Else
+		Slot3x
+		Sleep(5000)
+		DateTime.TimeFormat = "hh:mm a"
+		log3off.Text = DateTime.Time(DateTime.Now)
+	End If
+End Sub
+
+Sub device4on_Click
+	device4on.visible = False
+	device4off.Visible = True
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	log4on.Text = ""
+	log4off.Text = ""
+	Slot4
+	status4.Background = cd
+	Sleep(5000)
+	DateTime.TimeFormat = "hh:mm a"
+	log4on.Text = DateTime.Time(DateTime.Now)
+End Sub
+
+Sub device4off_Click
+	device4on.visible = True
+	device4off.Visible = False
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	
+	status4.Background = cx
+	If log4off.Text.Length = 11 And log4on.Text.Length = 11 Then
+		ToastMessageShow("Already OFF",True)
+	End If
+		
+	If log4on.Text = "" And log4off.Text = "" Then
+		ToastMessageShow("Already OFF",True)
+	Else
+		DateTime.TimeFormat = "hh:mm a"
+		Sleep(5000)
+		log4off.Text = DateTime.Time(DateTime.Now)
+		Slot4x
+	End If
+End Sub
+
+
+'BUTTON SUBS
+Sub Slot1
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+    Dim PhoneNumber As String 
+	PhoneNumber = txtNumber.text 
+    Dim Message As String = "DEVICE_1_ON"
+    'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try 
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Slot1x
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+	Dim PhoneNumber As String
+	PhoneNumber = txtNumber.text
+	Dim Message As String = "DEVICE_1_OFF"
+	'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Slot2
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+    Dim PhoneNumber As String 
+	PhoneNumber = txtNumber.text 
+    Dim Message As String = "DEVICE_2_ON"
+    'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try 
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Slot2x
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+	Dim PhoneNumber As String
+	PhoneNumber = txtNumber.text
+	Dim Message As String = "DEVICE_2_OFF"
+	'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Slot3
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+    Dim PhoneNumber As String 
+	PhoneNumber = txtNumber.text 
+    Dim Message As String = "DEVICE_3_ON"
+    'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try 
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Slot3x
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+	Dim PhoneNumber As String
+	PhoneNumber = txtNumber.text
+	Dim Message As String = "DEVICE_3_OFF"
+	'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Slot4
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+    Dim PhoneNumber As String 
+	PhoneNumber = txtNumber.text 
+    Dim Message As String = "DEVICE_4_ON"
+    'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try 
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Slot4x
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+    Dim PhoneNumber As String 
+	PhoneNumber = txtNumber.text 
+    Dim Message As String = "DEVICE_4_OFF"
+    'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try 
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Sub Status
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+    Dim PhoneNumber As String 
+	PhoneNumber = txtNumber.text 
+    Dim Message As String = "loadstatus"
+    'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try 
+		EditText1.Text=$"Sending to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try	
+End Sub
+
+Sub PE_SmsDelivered (PhoneNumber As String, Intent As Intent)
+	'Have never got a receipt from SMS using this!
+	Dim Result As String
+	Result="Receipt received from " & PhoneNumber 
+	Log(Result)
+	'EditText1.Text=EditText1.Text & Result & CRLF
+End Sub
+
+Sub PE_SmsSentStatus(Success As Boolean, ErrorMessage As String, PhoneNumber As String, Intent As Intent)
+	Dim Result As String
+	Result="Sent Status: " & Success & " : " & ErrorMessage
+	Log(Result)
+	EditText1.Text=EditText1.Text & Result & CRLF
+End Sub
+
+Sub GotMessage(From As String,MsgText As String)
+	'See Service Module modSMS
+	'EditText1.Text=EditText1.Text & $"
+	'Received a message From ${From}
+	'${MsgText}
+	'"$
+	Dim a,b,c As String
+	a = From
+	c = a.SubString(3)
+	b = "0" & c
+	If (a = txtNumber.Text Or b = txtNumber.Text)   Then
+		EditText2.Text= $"Received :
+${MsgText}
+"$
+	End If
+	Log($"
+	'Received a message From ${From}
+	${MsgText}
+	"$)
+End Sub
+
+
+Sub Button2_Click
+	hidecontroller
+End Sub
+
+Sub txtNumber_EnterPressed
+	Dim p As Phone
+	
+	If txtNumber.text.length > 10 Then
+		ToastMessageShow("Controller Number Registered!",True)
+		EditText1.RequestFocus
+		p.HideKeyboard(Activity)
+	Else
+		ToastMessageShow("Invalid Input",True)
+		txtNumber.RequestFocus
+	End If
+End Sub
+
+
+Private Sub allon_Click
+	allon.Visible =False
+	allof.Visible = True
+	device1on.Visible = False
+	device2on.Visible = False
+	device3on.Visible = False
+	device4on.Visible = False
+	device1off.Visible = True
+	device2off.Visible = True
+	device3off.Visible = True
+	device4off.Visible = True
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	DateTime.TimeFormat = "hh:mm a"
+	log1on.Text = ""
+	log1off.Text = ""
+	log2on.Text = ""
+	log2off.Text = ""
+	log3on.Text = ""
+	log3off.Text = ""
+	log4on.Text = ""
+	log4off.Text = ""
+	
+	status1.Background = cd
+	status2.Background = cd
+	status3.Background = cd
+	status4.Background = cd
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+	Dim PhoneNumber As String
+	PhoneNumber = txtNumber.text
+	Dim Message As String = "ALL_ON"
+	'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try
+		EditText1.Text=$"Sending Message to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+	Sleep(5000)
+	log1on.Text = DateTime.Time(DateTime.Now)
+	log2on.Text = DateTime.Time(DateTime.Now)
+	log3on.Text = DateTime.Time(DateTime.Now)
+	log4on.Text = DateTime.Time(DateTime.Now)
+End Sub
+
+Private Sub allof_Click
+	allon.Visible =True
+	allof.Visible = False
+	device1on.Visible = True
+	device2on.Visible = True
+	device3on.Visible = True
+	device4on.Visible = True
+	device1off.Visible = False
+	device2off.Visible = False
+	device3off.Visible = False
+	device4off.Visible = False
+	If txtNumber.Text = "" Or txtNumber.Text.Length < 10 Then
+		MsgboxAsync("Enter valid unit address","Invalid Input")
+	End If
+	status1.Background = cx
+	status2.Background = cx
+	status3.Background = cx
+	status4.Background = cx
+	If log1on.Text = "" Then
+		
+		DateTime.TimeFormat = "hh:mm a"
+		
+		log1off.Text =""
+	Else
+		DateTime.TimeFormat = "hh:mm a"
+		Sleep(5000)
+		log1off.Text = DateTime.Time(DateTime.Now)
+	End If
+	If log2on.Text = "" Then
+		DateTime.TimeFormat = "hh:mm a"
+		
+		log2off.Text =""
+	Else
+		DateTime.TimeFormat = "hh:mm a"
+	
+		log2off.Text = DateTime.Time(DateTime.Now)
+	End If
+	If log3on.Text = "" Then
+		DateTime.TimeFormat = "hh:mm a"
+		log3off.Text =""
+	Else
+		DateTime.TimeFormat = "hh:mm a"
+	
+		log3off.Text = DateTime.Time(DateTime.Now)
+	End If
+	If log4on.Text = "" Then
+		DateTime.TimeFormat = "hh:mm a"
+		log4off.Text =""
+	Else
+		DateTime.TimeFormat = "hh:mm a"
+		
+		log4off.Text = DateTime.Time(DateTime.Now)
+	End If
+	
+	
+	Log("Sending Message")
+	PE.InitializeWithPhoneState("PE", PhoneID)
+	Dim PhoneNumber As String
+	PhoneNumber = txtNumber.text
+	Dim Message As String = "ALL_OFF"
+	'SMS.Send(PhoneNumber,Message)
+	Dim WantSentStatus As Boolean = True
+	Dim WantDeliveryNotification As Boolean = True
+	Try
+		EditText1.Text=$"Sending Message to ${PhoneNumber}
+Command: ${Message}
+"$
+		SMS.Send2(PhoneNumber,Message,WantSentStatus,WantDeliveryNotification)
+	Catch
+		Log("Error when sending: " & LastException.Message)
+		EditText1.Text=EditText1.Text &  LastException.Message & CRLF
+	End Try
+End Sub
+
+Private Sub logbtn_Click
+	log1on.Text = ""
+	log1off.Text = ""
+	log2on.Text = ""
+	log2off.Text = ""
+	log3on.Text = ""
+	log3off.Text = ""
+	log4on.Text = ""
+	log4off.Text = ""
+	EditText1.Text = ""
+	EditText2.Text = ""
+	
+End Sub
+
+
+
+Private Sub Button1_Click
+	Status
+End Sub 
+
+
+Private Sub mainmenu_Click
+	showcontroller
+End Sub
+
+Private Sub close_Click
+	Log("Pressed Quit.")
+	Activity.Finish
+End Sub
+
+Sub showcontroller
+	Panel3.visible = True
+	Panel1.Visible = True
+	Panel2.Visible = True
+	Panel4.Visible = True
+	Panel12.Visible = True
+	Panel11.Visible = True
+	mainpanel.Visible = False
+End Sub
+
+Sub hidecontroller
+	Panel3.visible = False
+	Panel1.Visible = False
+	Panel2.Visible = False
+	Panel4.Visible = False
+	Panel12.Visible = False
+	Panel11.Visible = False
+	mainpanel.Visible = True
+End Sub
+
+Private Sub about_Click
+	Activity.LoadLayout("aboutlayout")
+End Sub
+
+Private Sub okabout_Click
+	aboutpanel.Visible = False
+End Sub
+
+Private Sub developer_Click
+	Activity.LoadLayout("developerlayout")
+End Sub
+
+Private Sub developerok_Click
+	developerpanel.Visible = False
+End Sub
+
